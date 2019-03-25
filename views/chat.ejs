@@ -7,7 +7,40 @@
 <% include partials/menu %>
 <div>    
   <h3><%= page %></h3><br>
+  <form onsubmit="return onSubmit(event)">
+    <input id="inputChat" class="form-control" placeholder="Chat" autocomplete="off">
+    <button class="btn btn-primary">Submit</button>
+  </form>
 </div>
 </body>
 <% include partials/script %>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io('http://localhost:3000/');
+
+  const inputChat = $( '#inputChat' );
+
+  socket.on('my message', function (msg) {
+    console.log( 'client: got my message' );
+    // $('#messages').append($('<p class="talk me">').text(msg));
+  });
+  socket.on('other message', function (msg) {
+    console.log( 'client: got other message' );
+    // $('#messages').append($('<p class="talk other">').text(msg));
+  });
+
+  function onSubmit() {
+    const text = inputChat.val().trim();
+
+    if( text === '' ) {
+      return false;
+    }
+
+    socket.emit( 'chat message', text );
+
+    inputChat.val( '' );
+    
+    return false;
+  }
+  </script>
 </html>
