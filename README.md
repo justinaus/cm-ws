@@ -1,1 +1,3 @@
 # cm-ws
+
+yarn start
