@@ -2,12 +2,27 @@
 <html lang="en">
 <head>
  <% include partials/head %> 
+ <style>
+   #formChat {
+    position: fixed; 
+    bottom: 0%;
+    width: calc(100% - 100px);
+   }
+
+   .liMe {
+    color: darkorange;
+   }
+   .liOthers {
+     color: darkgray;
+   }
+ </style>
 </head>
 <body>
 <% include partials/menu %>
 <div>    
   <h3><%= page %></h3><br>
-  <form onsubmit="return onSubmit(event)">
+  <ul id="ulChat"></ul>
+  <form id="formChat" onsubmit="return onSubmit(event)">
     <input id="inputChat" class="form-control" placeholder="Chat" autocomplete="off">
     <button class="btn btn-primary">Submit</button>
   </form>
@@ -19,14 +34,15 @@
   const socket = io('http://localhost:3000/');
 
   const inputChat = $( '#inputChat' );
+  const ulChat = $( '#ulChat' );
 
   socket.on('my message', function (msg) {
-    console.log( 'client: got my message' );
-    // $('#messages').append($('<p class="talk me">').text(msg));
+    const liItem = $('<li class="liMe">').text(msg);
+    ulChat.append( liItem );
   });
   socket.on('other message', function (msg) {
-    console.log( 'client: got other message' );
-    // $('#messages').append($('<p class="talk other">').text(msg));
+    const liItem = $('<li class="liOthers">').text(msg);
+    ulChat.append( liItem );
   });
 
   function onSubmit() {
