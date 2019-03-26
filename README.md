@@ -1,3 +1,3 @@
-# cm-ws
+# cm
 
 yarn start
