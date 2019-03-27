@@ -31,7 +31,10 @@
 <% include partials/script %>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  const socket = io('http://localhost:3000/');
+  const DOMAIN = "http://localhost";
+  const PORT= '<%= process.env.PORT %>';
+
+  const socket = io( DOMAIN + ':' + PORT);
 
   const inputChat = $( '#inputChat' );
   const ulChat = $( '#ulChat' );
