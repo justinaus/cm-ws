@@ -13,6 +13,9 @@
     color: darkorange;
    }
    .liOthers {
+     color: darkgreen;
+   }
+   .liConnected {
      color: darkgray;
    }
  </style>
@@ -40,13 +43,27 @@
   const ulChat = $( '#ulChat' );
 
   socket.on('my message', function (msg) {
-    const liItem = $('<li class="liMe">').text(msg);
-    ulChat.append( liItem );
+    appendChat( msg, 'liMe' );
   });
   socket.on('other message', function (msg) {
-    const liItem = $('<li class="liOthers">').text(msg);
-    ulChat.append( liItem );
+    appendChat( msg, 'liOthers' );
   });
+
+  socket.on('GUEST_CONNECTED', function (msg) {
+    appendChat( msg, 'liConnected' );
+  });
+  socket.on('GUEST_DISCONNECTED', function (msg) {
+    appendChat( msg, 'liConnected' );
+  });
+
+  function appendChat( msg, className ) {
+    const liItem = $('<li>');
+
+    liItem.addClass( className );
+    liItem.text( msg );
+
+    ulChat.append( liItem );
+  }
 
   function onSubmit() {
     const text = inputChat.val().trim();
